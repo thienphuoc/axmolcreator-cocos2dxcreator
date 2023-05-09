@@ -1,0 +1,30 @@
+set(_AX_MATH_HEADER
+    math/Vec2.h
+    math/Mat3.h
+    math/Mat4.h
+    math/Quaternion.h
+    math/TransformUtils.h
+    math/Vec4.h
+    math/CCAffineTransform.h
+    math/CCVertex.h
+    math/Vec3.h
+    math/CCMathBase.h
+    math/MathUtil.h
+    math/CCMath.h
+    math/Rect.h
+    math/FastRNG.h
+    )
+
+set(_AX_MATH_SRC
+    math/CCAffineTransform.cpp
+    math/CCVertex.cpp
+    math/Mat3.cpp
+    math/Mat4.cpp
+    math/MathUtil.cpp
+    math/Quaternion.cpp
+    math/TransformUtils.cpp
+    math/Vec2.cpp
+    math/Vec3.cpp
+    math/Vec4.cpp
+    math/Rect.cpp
+    )
