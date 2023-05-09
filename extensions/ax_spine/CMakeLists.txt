@@ -1,4 +1,4 @@
-set(target_name ax_spine1)
+set(target_name ax_spine)
 
 file(GLOB_RECURSE _AX_SPINE_SRC 
     ${CMAKE_CURRENT_LIST_DIR}/*.cpp
