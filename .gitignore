@@ -2,7 +2,7 @@
 Thumbs.db
 
 buildsrc/
-
+.DS_Store
 # Ignore files build by Visual Studio
 *.exe
 *.pdb
