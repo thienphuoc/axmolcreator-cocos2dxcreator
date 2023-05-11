@@ -27,7 +27,7 @@ THE SOFTWARE.
 #ifndef __PLATFORM_CCNS_H__
 #define __PLATFORM_CCNS_H__
 
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 NS_AX_BEGIN
 

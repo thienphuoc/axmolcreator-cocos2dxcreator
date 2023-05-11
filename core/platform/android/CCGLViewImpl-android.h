@@ -26,7 +26,7 @@ THE SOFTWARE.
 #pragma once
 
 #include "base/CCRef.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "platform/CCGLView.h"
 
 NS_AX_BEGIN

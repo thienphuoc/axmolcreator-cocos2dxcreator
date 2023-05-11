@@ -1,5 +1,5 @@
 #include "CCColorizer.h"
-#include "axmol/core/math/Mat3.h"
+#include "math/Mat3.h"
 #include "2d/CCNode.h"
 #include "renderer/ccShaders.h"
 #include "renderer/backend/Device.h"

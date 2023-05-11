@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated January 1, 2020. Replaces all prior versions.
+ * Last updated September 24, 2021. Replaces all prior versions.
  *
- * Copyright (c) 2013-2020, Esoteric Software LLC
+ * Copyright (c) 2013-2021, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -33,57 +33,57 @@
 #include "cocos2d.h"
 #if COCOS2D_VERSION >= 0x00040000
 
+#include "renderer/backend/ProgramState.h"
 #include <spine/spine.h>
 #include <vector>
-#include "renderer/backend/ProgramState.h"
 
 namespace spine {
-    
-    class SP_API SkeletonBatch {
-    public:
-        static SkeletonBatch* getInstance ();
-        
-        static void destroyInstance ();
-        
-        void update (float delta);
-		
-		ax::V3F_C4B_T2F* allocateVertices(uint32_t numVertices);
+	struct SkeletonCommand : public cocos2d::TrianglesCommand {
+		cocos2d::backend::UniformLocation _locMVP;
+		cocos2d::backend::UniformLocation _locTexture;
+	};
+	class SP_API SkeletonBatch {
+	public:
+		static SkeletonBatch *getInstance();
+
+		static void destroyInstance();
+
+		void update(float delta);
+
+		cocos2d::V3F_C4B_T2F *allocateVertices(uint32_t numVertices);
 		void deallocateVertices(uint32_t numVertices);
-		unsigned short* allocateIndices(uint32_t numIndices);
+		unsigned short *allocateIndices(uint32_t numIndices);
 		void deallocateIndices(uint32_t numVertices);
-		ax::TrianglesCommand* addCommand(ax::Renderer* renderer, float globalOrder, ax::Texture2D* texture, ax::backend::ProgramState* programState, ax::BlendFunc blendType, const ax::TrianglesCommand::Triangles& triangles, const ax::Mat4& mv, uint32_t flags);
-        
-		void updateProgramStateLayout(ax::backend::ProgramState* programState);
+		cocos2d::TrianglesCommand *addCommand(cocos2d::Renderer *renderer, float globalOrder, cocos2d::Texture2D *texture, cocos2d::backend::ProgramState *programState, cocos2d::BlendFunc blendType, const cocos2d::TrianglesCommand::Triangles &triangles, const cocos2d::Mat4 &mv, uint32_t flags);
 
-    protected:
-        SkeletonBatch ();
-        virtual ~SkeletonBatch ();
-		
-		void reset ();
-		
-		ax::TrianglesCommand* nextFreeCommand ();
+		cocos2d::backend::ProgramState* updateCommandPipelinePS(SkeletonCommand* command, cocos2d::backend::ProgramState* programState);
 
-        ax::TrianglesCommand* createNewTrianglesCommand();
+	protected:
+		SkeletonBatch();
+		virtual ~SkeletonBatch();
 
-        // the default program state for batch draw
-        ax::backend::ProgramState*                     _programState = nullptr;
-        ax::backend::UniformLocation                   _locMVP;
-        ax::backend::UniformLocation                   _locTexture;
-		
+		void reset();
+
+		SkeletonCommand* nextFreeCommand ();
+
+		SkeletonCommand* newCommand();
+
+		ax::backend::ProgramState*                     _programState; // The default program state
+
 		// pool of commands
-		std::vector<ax::TrianglesCommand*>             _commandsPool;
-		uint32_t                                            _nextFreeCommand;
-		
+		std::vector<SkeletonCommand *> _commandsPool;
+		uint32_t _nextFreeCommand;
+
 		// pool of vertices
-		std::vector<ax::V3F_C4B_T2F>                   _vertices;
-		uint32_t                                            _numVertices;
-		
+		std::vector<cocos2d::V3F_C4B_T2F> _vertices;
+		uint32_t _numVertices;
+
 		// pool of indices
-		Vector<unsigned short>                              _indices;
-    };
-	
-}
+		Vector<unsigned short> _indices;
+	};
+
+}// namespace spine
 
 #endif
 
-#endif // SPINE_SKELETONBATCH_H_
+#endif// SPINE_SKELETONBATCH_H_

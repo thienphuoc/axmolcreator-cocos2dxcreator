@@ -87,15 +87,15 @@ THE SOFTWARE.
 #include "base/CCEventType.h"
 
 // math
-#include "axmol/core/math/CCAffineTransform.h"
-#include "axmol/core/math/CCMath.h"
-#include "axmol/core/math/CCVertex.h"
-#include "axmol/core/math/Mat4.h"
-#include "axmol/core/math/MathUtil.h"
-#include "axmol/core/math/Quaternion.h"
-#include "axmol/core/math/Vec2.h"
-#include "axmol/core/math/Vec3.h"
-#include "axmol/core/math/Vec4.h"
+#include "math/CCAffineTransform.h"
+#include "math/CCMath.h"
+#include "math/CCVertex.h"
+#include "math/Mat4.h"
+#include "math/MathUtil.h"
+#include "math/Quaternion.h"
+#include "math/Vec2.h"
+#include "math/Vec3.h"
+#include "math/Vec4.h"
 
 // actions
 #include "2d/CCAction.h"

@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "axmol/core/math/Rect.h"
+#include "math/Rect.h"
 
 #include <algorithm>
 #include <cmath>

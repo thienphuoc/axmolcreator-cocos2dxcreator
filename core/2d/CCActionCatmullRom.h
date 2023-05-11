@@ -39,7 +39,7 @@
 #include <vector>
 
 #include "2d/CCActionInterval.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 NS_AX_BEGIN;
 

@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #include "2d/CCMotionStreak.h"
-#include "axmol/core/math/CCVertex.h"
+#include "math/CCVertex.h"
 #include "base/CCDirector.h"
 #include "base/ccUtils.h"
 #include "renderer/CCTextureCache.h"

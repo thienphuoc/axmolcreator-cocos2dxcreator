@@ -18,7 +18,7 @@
  This file was modified to fit the cocos2d-x project
  */
 
-#include "axmol/core/math/Vec2.h"
+#include "math/Vec2.h"
 
 NS_AX_MATH_BEGIN
 

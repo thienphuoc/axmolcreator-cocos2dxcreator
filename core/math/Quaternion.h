@@ -23,8 +23,8 @@
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 
-#include "axmol/core/math/Vec3.h"
-#include "axmol/core/math/Mat4.h"
+#include "math/Vec3.h"
+#include "math/Mat4.h"
 //#include "Plane.h"
 
 /**
@@ -426,6 +426,6 @@ NS_AX_MATH_END
  end of base group
  @}
  */
-#include "axmol/core/math/Quaternion.inl"
+#include "math/Quaternion.inl"
 
 #endif

@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 #include <string>
 
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "base/CCRef.h"
 #include "renderer/backend/Types.h"
 

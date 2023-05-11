@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated January 1, 2020. Replaces all prior versions.
+ * Last updated September 24, 2021. Replaces all prior versions.
  *
- * Copyright (c) 2013-2020, Esoteric Software LLC
+ * Copyright (c) 2013-2021, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -30,175 +30,170 @@
 #include <spine/spine-cocos2dx.h>
 #if COCOS2D_VERSION >= 0x00040000
 
-#include <spine/Extension.h>
 #include <algorithm>
+#include <spine/Extension.h>
 
 USING_NS_CC;
 #define EVENT_AFTER_DRAW_RESET_POSITION "director_after_draw"
 using std::max;
 #define INITIAL_SIZE (10000)
 
-#include "renderer/ccShaders.h"
 #include "renderer/backend/Device.h"
+#include "renderer/ccShaders.h"
+#include "renderer/backend/Types.h"
 
 namespace spine {
 
-static SkeletonBatch* instance = nullptr;
+	static SkeletonBatch *instance = nullptr;
 
-SkeletonBatch* SkeletonBatch::getInstance () {
-	if (!instance) instance = new SkeletonBatch();
-	return instance;
-}
-
-void SkeletonBatch::destroyInstance () {
-	if (instance) {
-		delete instance;
-		instance = nullptr;
-	}
-}
-
-SkeletonBatch::SkeletonBatch () {
-
-    auto program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_TEXTURE_COLOR);
-	_programState = new backend::ProgramState(program); // new default program state
-	updateProgramStateLayout(_programState);
-    for (unsigned int i = 0; i < INITIAL_SIZE; i++) {
-        _commandsPool.push_back(createNewTrianglesCommand());
-    }
-    reset();
-    // callback after drawing is finished so we can clear out the batch state
-    // for the next frame
-    Director::getInstance()->getEventDispatcher()->addCustomEventListener(EVENT_AFTER_DRAW_RESET_POSITION, [this](EventCustom* eventCustom) {
-        this->update(0);
-        });;
-}
-
-SkeletonBatch::~SkeletonBatch () {
-	Director::getInstance()->getEventDispatcher()->removeCustomEventListeners(EVENT_AFTER_DRAW_RESET_POSITION);
-
-	for (unsigned int i = 0; i < _commandsPool.size(); i++) {
-        CC_SAFE_RELEASE(_commandsPool[i]->getPipelineDescriptor().programState);
-		delete _commandsPool[i];
-		_commandsPool[i] = nullptr;
+	SkeletonBatch *SkeletonBatch::getInstance() {
+		if (!instance) instance = new SkeletonBatch();
+		return instance;
 	}
 
-	CC_SAFE_RELEASE(_programState);
-}
-
-void SkeletonBatch::updateProgramStateLayout(ax::backend::ProgramState* programState)
-{
-	auto vertexLayout = programState->getVertexLayout();
-
-	auto locPosition = programState->getAttributeLocation(backend::ATTRIBUTE_NAME_POSITION);
-	auto locTexcoord = programState->getAttributeLocation(backend::ATTRIBUTE_NAME_TEXCOORD);
-	auto locColor = programState->getAttributeLocation(backend::ATTRIBUTE_NAME_COLOR);
-	programState->setVertexAttrib(backend::ATTRIBUTE_NAME_POSITION, locPosition, backend::VertexFormat::FLOAT3, offsetof(V3F_C4B_T2F, vertices), false);
-	programState->setVertexAttrib(backend::ATTRIBUTE_NAME_COLOR, locColor, backend::VertexFormat::UBYTE4, offsetof(V3F_C4B_T2F, colors), true);
-	programState->setVertexAttrib(backend::ATTRIBUTE_NAME_TEXCOORD, locTexcoord, backend::VertexFormat::FLOAT2, offsetof(V3F_C4B_T2F, texCoords), false);
-	programState->setVertexStride(sizeof(_vertices[0]));
-
-
-	_locMVP = programState->getUniformLocation(backend::UNIFORM_NAME_MVP_MATRIX);
-	_locTexture = programState->getUniformLocation(backend::UNIFORM_NAME_TEXTURE);
-}
-
-void SkeletonBatch::update (float delta) {
-	reset();
-}
-
-ax::V3F_C4B_T2F* SkeletonBatch::allocateVertices(uint32_t numVertices) {
-	if (_vertices.size() - _numVertices < numVertices) {
-		ax::V3F_C4B_T2F* oldData = _vertices.data();
-		_vertices.resize((_vertices.size() + numVertices) * 2 + 1);
-		ax::V3F_C4B_T2F* newData = _vertices.data();
-		for (uint32_t i = 0; i < this->_nextFreeCommand; i++) {
-			TrianglesCommand* command = _commandsPool[i];
-			ax::TrianglesCommand::Triangles& triangles = (ax::TrianglesCommand::Triangles&)command->getTriangles();
-			triangles.verts = newData + (triangles.verts - oldData);
+	void SkeletonBatch::destroyInstance() {
+		if (instance) {
+			delete instance;
+			instance = nullptr;
 		}
 	}
 
-	ax::V3F_C4B_T2F* vertices = _vertices.data() + _numVertices;
-	_numVertices += numVertices;
-	return vertices;
-}
+	SkeletonBatch::SkeletonBatch() {
 
-void SkeletonBatch::deallocateVertices(uint32_t numVertices) {
-	_numVertices -= numVertices;
-}
+		auto program = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_TEXTURE_COLOR);
+		_programState = new backend::ProgramState(program);// new default program state
+		for (unsigned int i = 0; i < INITIAL_SIZE; i++) {
+			_commandsPool.push_back(newCommand());
+		}
+		reset();
+		// callback after drawing is finished so we can clear out the batch state
+		// for the next frame
+		Director::getInstance()->getEventDispatcher()->addCustomEventListener(EVENT_AFTER_DRAW_RESET_POSITION, [this](EventCustom *eventCustom) {
+			this->update(0);
+		});
+		;
+	}
 
+	SkeletonBatch::~SkeletonBatch() {
+		Director::getInstance()->getEventDispatcher()->removeCustomEventListeners(EVENT_AFTER_DRAW_RESET_POSITION);
 
-unsigned short* SkeletonBatch::allocateIndices(uint32_t numIndices) {
-	if (_indices.getCapacity() - _indices.size() < numIndices) {
-		unsigned short* oldData = _indices.buffer();
-		int oldSize = _indices.size();
-		_indices.ensureCapacity(_indices.size() + numIndices);
-		unsigned short* newData = _indices.buffer();
-		for (uint32_t i = 0; i < this->_nextFreeCommand; i++) {
-			TrianglesCommand* command = _commandsPool[i];
-			ax::TrianglesCommand::Triangles& triangles = (ax::TrianglesCommand::Triangles&)command->getTriangles();
-			if (triangles.indices >= oldData && triangles.indices < oldData + oldSize) {
-				triangles.indices = newData + (triangles.indices - oldData);
+		for (unsigned int i = 0; i < _commandsPool.size(); i++) {
+			CC_SAFE_RELEASE(_commandsPool[i]->getPipelineDescriptor().programState);
+			delete _commandsPool[i];
+			_commandsPool[i] = nullptr;
+		}
+
+		CC_SAFE_RELEASE(_programState);
+	}
+
+	backend::ProgramState* SkeletonBatch::updateCommandPipelinePS(SkeletonCommand* command, backend::ProgramState* programState)
+	{
+		auto& currentState = command->getPipelineDescriptor().programState;
+	#if defined(AX_VERSION)
+		if(currentState == nullptr || currentState->getProgram() != programState->getProgram() || currentState->getUniformID() != programState->getUniformID()) {
+	#else
+		if(currentState == nullptr || currentState->getProgram() != programState->getProgram()) {
+	#endif
+			CC_SAFE_RELEASE(currentState);
+			currentState = programState->clone();
+		
+			command->_locMVP     = currentState->getUniformLocation(backend::UNIFORM_NAME_MVP_MATRIX);
+	        command->_locTexture = currentState->getUniformLocation(backend::UNIFORM_NAME_TEXTURE);
+		}
+		return currentState;
+	}
+
+	void SkeletonBatch::update(float delta) {
+		reset();
+	}
+
+	cocos2d::V3F_C4B_T2F *SkeletonBatch::allocateVertices(uint32_t numVertices) {
+		if (_vertices.size() - _numVertices < numVertices) {
+			cocos2d::V3F_C4B_T2F *oldData = _vertices.data();
+			_vertices.resize((_vertices.size() + numVertices) * 2 + 1);
+			cocos2d::V3F_C4B_T2F *newData = _vertices.data();
+			for (uint32_t i = 0; i < this->_nextFreeCommand; i++) {
+				SkeletonCommand *command = _commandsPool[i];
+				SkeletonCommand::Triangles &triangles = (SkeletonCommand::Triangles &) command->getTriangles();
+				triangles.verts = newData + (triangles.verts - oldData);
 			}
 		}
+
+		cocos2d::V3F_C4B_T2F *vertices = _vertices.data() + _numVertices;
+		_numVertices += numVertices;
+		return vertices;
 	}
 
-	unsigned short* indices = _indices.buffer() + _indices.size();
-	_indices.setSize(_indices.size() + numIndices, 0);
-	return indices;
-}
-
-void SkeletonBatch::deallocateIndices(uint32_t numIndices) {
-	_indices.setSize(_indices.size() - numIndices, 0);
-}
-
-
-ax::TrianglesCommand* SkeletonBatch::addCommand(ax::Renderer* renderer, float globalOrder, ax::Texture2D* texture, backend::ProgramState* programState, ax::BlendFunc blendType, const ax::TrianglesCommand::Triangles& triangles, const ax::Mat4& mv, uint32_t flags) {
-	TrianglesCommand* command = nextFreeCommand();
-    const ax::Mat4& projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);    
-
-	if (programState == nullptr)
-		programState = _programState;
-
-	CCASSERT(programState, "programState should not be null");
-
-	auto& pipelinePS = command->getPipelineDescriptor().programState;
-	if (pipelinePS == nullptr || pipelinePS->getProgram() != programState->getProgram())
-	{
-		CC_SAFE_RELEASE(pipelinePS);
-		pipelinePS = programState->clone();
-		updateProgramStateLayout(pipelinePS);
+	void SkeletonBatch::deallocateVertices(uint32_t numVertices) {
+		_numVertices -= numVertices;
 	}
-	
-	pipelinePS->setUniform(_locMVP, projectionMat.m, sizeof(projectionMat.m));
-	pipelinePS->setTexture(_locTexture, 0, texture->getBackendTexture());
 
-	command->init(globalOrder, texture, blendType, triangles, mv, flags);
-	renderer->addCommand(command);
-	return command;
-}
 
-void SkeletonBatch::reset() {
-	_nextFreeCommand = 0;
-	_numVertices = 0;
-	_indices.setSize(0, 0);
-}
+	unsigned short *SkeletonBatch::allocateIndices(uint32_t numIndices) {
+		if (_indices.getCapacity() - _indices.size() < numIndices) {
+			unsigned short *oldData = _indices.buffer();
+			int oldSize = _indices.size();
+			_indices.ensureCapacity(_indices.size() + numIndices);
+			unsigned short *newData = _indices.buffer();
+			for (uint32_t i = 0; i < this->_nextFreeCommand; i++) {
+				SkeletonCommand *command = _commandsPool[i];
+				SkeletonCommand::Triangles &triangles = (SkeletonCommand::Triangles &) command->getTriangles();
+				if (triangles.indices >= oldData && triangles.indices < oldData + oldSize) {
+					triangles.indices = newData + (triangles.indices - oldData);
+				}
+			}
+		}
 
-ax::TrianglesCommand* SkeletonBatch::nextFreeCommand() {
-    if (_commandsPool.size() <= _nextFreeCommand) {
-        unsigned int newSize = _commandsPool.size() * 2 + 1;
-        for (int i = _commandsPool.size(); i < newSize; i++) {
-            _commandsPool.push_back(createNewTrianglesCommand());
-        }
-    }
-    auto* command = _commandsPool[_nextFreeCommand++];
-    return command;
-}
+		unsigned short *indices = _indices.buffer() + _indices.size();
+		_indices.setSize(_indices.size() + numIndices, 0);
+		return indices;
+	}
 
-ax::TrianglesCommand *SkeletonBatch::createNewTrianglesCommand() {
-    auto* command = new TrianglesCommand();
-    return command;
-}
-}
+	void SkeletonBatch::deallocateIndices(uint32_t numIndices) {
+		_indices.setSize(_indices.size() - numIndices, 0);
+	}
+
+
+	cocos2d::TrianglesCommand *SkeletonBatch::addCommand(cocos2d::Renderer *renderer, float globalOrder, cocos2d::Texture2D *texture, backend::ProgramState *programState, cocos2d::BlendFunc blendType, const cocos2d::TrianglesCommand::Triangles &triangles, const cocos2d::Mat4 &mv, uint32_t flags) {
+		SkeletonCommand *command = nextFreeCommand();
+		const cocos2d::Mat4 &projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+
+		if (programState == nullptr)
+			programState = _programState;
+
+		CCASSERT(programState, "programState should not be null");
+
+		auto pipelinePS = updateCommandPipelinePS(command, programState);
+
+		pipelinePS->setUniform(command->_locMVP, projectionMat.m, sizeof(projectionMat.m));
+		pipelinePS->setTexture(command->_locTexture, 0, texture->getBackendTexture());
+
+		command->init(globalOrder, texture, blendType, triangles, mv, flags);
+		renderer->addCommand(command);
+		return command;
+	}
+
+	void SkeletonBatch::reset() {
+		_nextFreeCommand = 0;
+		_numVertices = 0;
+		_indices.setSize(0, 0);
+	}
+
+	SkeletonCommand *SkeletonBatch::nextFreeCommand() {
+		if (_commandsPool.size() <= _nextFreeCommand) {
+			unsigned int newSize = _commandsPool.size() * 2 + 1;
+			for (int i = _commandsPool.size(); i < newSize; i++) {
+				_commandsPool.push_back(newCommand());
+			}
+		}
+		auto *command = _commandsPool[_nextFreeCommand++];
+		return command;
+	}
+
+	SkeletonCommand *SkeletonBatch::newCommand() {
+		auto *command = new SkeletonCommand();
+		return command;
+	}
+}// namespace spine
 
 #endif

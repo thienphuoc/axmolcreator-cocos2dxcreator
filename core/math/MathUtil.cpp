@@ -19,7 +19,7 @@ Original file from GamePlay3D: http://gameplay3d.org
 This file was modified to fit the cocos2d-x project
 */
 
-#include "axmol/core/math/MathUtil.h"
+#include "math/MathUtil.h"
 #include "base/ccMacros.h"
 
 #if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
@@ -71,7 +71,7 @@ This file was modified to fit the cocos2d-x project
 #    include "math/MathUtilSSE.inl"
 #endif
 
-#include "axmol/core/math/MathUtil.inl"
+#include "math/MathUtil.inl"
 
 NS_AX_MATH_BEGIN
 

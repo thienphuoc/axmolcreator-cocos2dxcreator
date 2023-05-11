@@ -28,7 +28,7 @@
 #define __cocos2d_libs__CCMouseEvent__
 
 #include "base/CCEvent.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 /**
  * @addtogroup base

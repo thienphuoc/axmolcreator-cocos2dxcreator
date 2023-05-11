@@ -29,7 +29,7 @@
 #include <algorithm>
 #include <functional>
 #include <cmath>
-#include "axmol/core/math/CCMathBase.h"
+#include "math/CCMathBase.h"
 
 /**
  * @addtogroup base
@@ -755,6 +755,6 @@ NS_AX_MATH_END
  @}
  */
 
-#include "axmol/core/math/Vec2.inl"
+#include "math/Vec2.inl"
 
 #endif  // MATH_VEC2_H

@@ -18,7 +18,7 @@
  This file was modified to fit the cocos2d-x project
  */
 
-#include "axmol/core/math/Quaternion.h"
+#include "math/Quaternion.h"
 
 NS_AX_MATH_BEGIN
 

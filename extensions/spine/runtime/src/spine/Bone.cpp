@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated May 1, 2019. Replaces all prior versions.
+ * Last updated September 24, 2021. Replaces all prior versions.
  *
- * Copyright (c) 2013-2019, Esoteric Software LLC
+ * Copyright (c) 2013-2021, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -15,21 +15,17 @@
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
  *
- * THIS SOFTWARE IS PROVIDED BY ESOTERIC SOFTWARE LLC "AS IS" AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN
- * NO EVENT SHALL ESOTERIC SOFTWARE LLC BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES, BUSINESS
- * INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE SPINE RUNTIMES ARE PROVIDED BY ESOTERIC SOFTWARE LLC "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ESOTERIC SOFTWARE LLC BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
+ * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-
-#ifdef SPINE_UE4
-#include "SpinePluginPrivatePCH.h"
-#endif
 
 #include <spine/Bone.h>
 
@@ -68,27 +64,26 @@ Bone::Bone(BoneData &data, Skeleton &skeleton, Bone *parent) : Updatable(),
 															   _ascaleY(0),
 															   _ashearX(0),
 															   _ashearY(0),
-															   _appliedValid(false),
 															   _a(1),
 															   _b(0),
 															   _worldX(0),
 															   _c(0),
 															   _d(1),
 															   _worldY(0),
-															   _sorted(false) {
+															   _sorted(false),
+															   _active(false) {
 	setToSetupPose();
 }
 
 void Bone::update() {
-	updateWorldTransform(_x, _y, _rotation, _scaleX, _scaleY, _shearX, _shearY);
+	updateWorldTransform(_ax, _ay, _arotation, _ascaleX, _ascaleY, _ashearX, _ashearY);
 }
 
 void Bone::updateWorldTransform() {
 	updateWorldTransform(_x, _y, _rotation, _scaleX, _scaleY, _shearX, _shearY);
 }
 
-void
-Bone::updateWorldTransform(float x, float y, float rotation, float scaleX, float scaleY, float shearX, float shearY) {
+void Bone::updateWorldTransform(float x, float y, float rotation, float scaleX, float scaleY, float shearX, float shearY) {
 	float cosine, sine;
 	float pa, pb, pc, pd;
 	Bone *parent = _parent;
@@ -100,7 +95,6 @@ Bone::updateWorldTransform(float x, float y, float rotation, float scaleX, float
 	_ascaleY = scaleY;
 	_ashearX = shearX;
 	_ashearY = shearY;
-	_appliedValid = true;
 
 	if (!parent) { /* Root bone. */
 		float rotationY = rotation + 90 + shearY;
@@ -149,6 +143,8 @@ Bone::updateWorldTransform(float x, float y, float rotation, float scaleX, float
 			float prx, rx, ry, la, lb, lc, ld;
 			if (s > 0.0001f) {
 				s = MathUtil::abs(pa * pd - pb * pc) / s;
+				pa /= _skeleton.getScaleX();
+				pc /= _skeleton.getScaleY();
 				pb = pc * s;
 				pd = pa * s;
 				prx = MathUtil::atan2(pc, pa) * MathUtil::Rad_Deg;
@@ -182,8 +178,8 @@ Bone::updateWorldTransform(float x, float y, float rotation, float scaleX, float
 			za *= s;
 			zc *= s;
 			s = MathUtil::sqrt(za * za + zc * zc);
-			if (_data.getTransformMode() == TransformMode_NoScale
-				&& (pa * pd - pb * pc < 0) != (_skeleton.getScaleX() < 0 != _skeleton.getScaleY() < 0))
+			if (_data.getTransformMode() == TransformMode_NoScale &&
+				(pa * pd - pb * pc < 0) != (_skeleton.getScaleX() < 0 != _skeleton.getScaleY() < 0))
 				s = -s;
 			r = MathUtil::Pi / 2 + MathUtil::atan2(zc, za);
 			zb = MathUtil::cos(r) * s;
@@ -239,7 +235,8 @@ float Bone::worldToLocalRotation(float worldRotation) {
 	float sin = MathUtil::sinDeg(worldRotation);
 	float cos = MathUtil::cosDeg(worldRotation);
 
-	return MathUtil::atan2(_a * sin - _c * cos, _d * cos - _b * sin) * MathUtil::Rad_Deg + this->_rotation - this->_shearX;
+	return MathUtil::atan2(_a * sin - _c * cos, _d * cos - _b * sin) * MathUtil::Rad_Deg + this->_rotation -
+		   this->_shearX;
 }
 
 float Bone::localToWorldRotation(float localRotation) {
@@ -263,8 +260,6 @@ void Bone::rotateWorld(float degrees) {
 	_b = cos * b - sin * d;
 	_c = sin * a + cos * c;
 	_d = sin * b + cos * d;
-
-	_appliedValid = false;
 }
 
 float Bone::getWorldToLocalRotationX() {
@@ -476,7 +471,7 @@ void Bone::setWorldY(float inValue) {
 }
 
 float Bone::getWorldRotationX() {
-	return MathUtil::atan2(_c, _a) * MathUtil::MathUtil::Rad_Deg;
+	return MathUtil::atan2(_c, _a) * MathUtil::Rad_Deg;
 }
 
 float Bone::getWorldRotationY() {
@@ -491,19 +486,11 @@ float Bone::getWorldScaleY() {
 	return MathUtil::sqrt(_b * _b + _d * _d);
 }
 
-bool Bone::isAppliedValid() {
-	return _appliedValid;
-}
-void Bone::setAppliedValid(bool valid) {
-	_appliedValid = valid;
-}
-
 void Bone::updateAppliedTransform() {
 	Bone *parent = _parent;
-	_appliedValid = 1;
 	if (!parent) {
-		_ax = _worldX;
-		_ay = _worldY;
+		_ax = _worldX - _skeleton.getX();
+		_ay = _worldY - _skeleton.getY();
 		_arotation = MathUtil::atan2(_c, _a) * MathUtil::Rad_Deg;
 		_ascaleX = MathUtil::sqrt(_a * _a + _c * _c);
 		_ascaleY = MathUtil::sqrt(_b * _b + _d * _d);
@@ -537,4 +524,12 @@ void Bone::updateAppliedTransform() {
 			_arotation = 90 - MathUtil::atan2(rd, rb) * MathUtil::Rad_Deg;
 		}
 	}
+}
+
+bool Bone::isActive() {
+	return _active;
+}
+
+void Bone::setActive(bool inValue) {
+	_active = inValue;
 }

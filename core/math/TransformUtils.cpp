@@ -25,8 +25,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "axmol/core/math/TransformUtils.h"
-#include "axmol/core/math/CCAffineTransform.h"
+#include "math/TransformUtils.h"
+#include "math/CCAffineTransform.h"
 
 NS_AX_BEGIN
 

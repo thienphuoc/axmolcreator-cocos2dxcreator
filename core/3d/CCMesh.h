@@ -32,7 +32,7 @@
 #include "3d/CC3DProgramInfo.h"
 
 #include "base/CCRef.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "renderer/CCMeshCommand.h"
 #include "renderer/CCCustomCommand.h"
 

@@ -26,7 +26,7 @@
 #ifndef __CCATTACHNODE_H__
 #define __CCATTACHNODE_H__
 
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "2d/CCNode.h"
 
 NS_AX_BEGIN

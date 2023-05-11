@@ -33,7 +33,7 @@
 
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "renderer/CCMeshCommand.h"
 
 NS_AX_BEGIN

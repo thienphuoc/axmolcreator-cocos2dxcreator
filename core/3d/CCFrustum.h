@@ -27,7 +27,7 @@
 #define __AX_FRUSTUM_H_
 
 #include "base/ccMacros.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "3d/CCAABB.h"
 #include "3d/CCOBB.h"
 #include "3d/CCPlane.h"

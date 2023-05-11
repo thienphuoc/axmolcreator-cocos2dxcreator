@@ -28,7 +28,7 @@ THE SOFTWARE.
 #define __AX_IME_DELEGATE_H__
 
 #include <string>
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "base/CCEventKeyboard.h"
 
 /**

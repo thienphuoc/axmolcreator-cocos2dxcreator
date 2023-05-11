@@ -37,10 +37,10 @@
 #include "renderer/CCCustomCommand.h"
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include "axmol/core/math/Vec2.h"
-#include "axmol/core/math/Vec3.h"
-#include "axmol/core/math/Vec4.h"
-#include "axmol/core/math/Mat4.h"
+#include "math/Vec2.h"
+#include "math/Vec3.h"
+#include "math/Vec4.h"
+#include "math/Mat4.h"
 #include "platform/CCPlatformMacros.h"
 
 NS_AX_BEGIN

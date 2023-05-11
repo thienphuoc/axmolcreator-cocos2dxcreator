@@ -27,7 +27,7 @@
 #    include <xmmintrin.h>
 #endif
 
-#include "axmol/core/math/CCMathBase.h"
+#include "math/CCMathBase.h"
 
 /**
  * @addtogroup base

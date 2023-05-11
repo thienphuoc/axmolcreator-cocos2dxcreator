@@ -29,7 +29,7 @@
 
 #include "base/CCRef.h"
 #include "base/ccTypes.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "3d/CCAABB.h"
 
 #include "renderer/backend/Types.h"

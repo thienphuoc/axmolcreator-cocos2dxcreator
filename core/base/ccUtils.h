@@ -35,7 +35,7 @@ THE SOFTWARE.
 #include "base/CCRefPtr.h"
 #include "base/CCData.h"
 #include "renderer/backend/Types.h"
-#include "axmol/core/math/Mat4.h"
+#include "math/Mat4.h"
 
 /** @file ccUtils.h
 Misc free functions

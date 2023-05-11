@@ -44,7 +44,7 @@ THE SOFTWARE.
 #include "2d/CCScene.h"
 #include "2d/CCComponent.h"
 #include "renderer/CCMaterial.h"
-#include "axmol/core/math/TransformUtils.h"
+#include "math/TransformUtils.h"
 #include "renderer/backend/ProgramStateRegistry.h"
 
 #if AX_NODE_RENDER_SUBPIXEL

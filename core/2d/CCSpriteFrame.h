@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "2d/CCNode.h"
 #include "2d/CCAutoPolygon.h"
 #include "base/CCRef.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 NS_AX_BEGIN
 

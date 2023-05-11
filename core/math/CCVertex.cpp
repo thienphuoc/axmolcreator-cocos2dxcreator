@@ -25,7 +25,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "axmol/core/math/CCVertex.h"
+#include "math/CCVertex.h"
 #include "base/ccMacros.h"
 
 NS_AX_BEGIN

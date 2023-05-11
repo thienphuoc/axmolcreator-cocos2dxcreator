@@ -28,7 +28,7 @@ THE SOFTWARE.
 #ifndef __MATH_RECT_H__
 #define __MATH_RECT_H__
 
-#include "axmol/core/math/Vec2.h"
+#include "math/Vec2.h"
 
 /**
  * @addtogroup base

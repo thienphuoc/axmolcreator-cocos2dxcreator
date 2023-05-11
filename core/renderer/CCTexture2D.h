@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include <unordered_map>
 
 #include "base/CCRef.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "base/ccTypes.h"
 #include "renderer/CCCustomCommand.h"
 

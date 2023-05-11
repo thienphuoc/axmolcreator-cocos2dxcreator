@@ -31,7 +31,7 @@
 #include "renderer/backend/ProgramState.h"
 #include "renderer/backend/Types.h"
 #include "renderer/CCCustomCommand.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 NS_AX_BEGIN
 

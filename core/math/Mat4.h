@@ -25,8 +25,8 @@
 
 #include "base/ccMacros.h"
 
-#include "axmol/core/math/Vec3.h"
-#include "axmol/core/math/Vec4.h"
+#include "math/Vec3.h"
+#include "math/Vec4.h"
 
 #ifdef __SSE__
 #    include <xmmintrin.h>
@@ -1047,6 +1047,6 @@ NS_AX_MATH_END
  end of base group
  @}
  */
-#include "axmol/core/math/Mat4.inl"
+#include "math/Mat4.inl"
 
 #endif  // MATH_MAT4_H

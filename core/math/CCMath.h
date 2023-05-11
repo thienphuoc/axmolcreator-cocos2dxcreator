@@ -25,11 +25,11 @@
 #ifndef __AX_MATH_H__
 #define __AX_MATH_H__
 
-#include "axmol/core/math/Vec2.h"
-#include "axmol/core/math/Vec3.h"
-#include "axmol/core/math/Vec4.h"
-#include "axmol/core/math/Mat4.h"
-#include "axmol/core/math/Rect.h"
-#include "axmol/core/math/Quaternion.h"
+#include "math/Vec2.h"
+#include "math/Vec3.h"
+#include "math/Vec4.h"
+#include "math/Mat4.h"
+#include "math/Rect.h"
+#include "math/Quaternion.h"
 
 #endif

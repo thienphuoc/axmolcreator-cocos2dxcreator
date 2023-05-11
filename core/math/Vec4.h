@@ -27,7 +27,7 @@
 #    include <xmmintrin.h>
 #endif
 
-#include "axmol/core/math/CCMathBase.h"
+#include "math/CCMathBase.h"
 
 /**
  * @addtogroup base
@@ -466,6 +466,6 @@ NS_AX_MATH_END
  end of base group
  @}
  */
-#include "axmol/core/math/Vec4.inl"
+#include "math/Vec4.inl"
 
 #endif  // MATH_VEC4_H

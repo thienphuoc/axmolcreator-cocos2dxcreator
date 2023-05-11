@@ -36,7 +36,7 @@ THE SOFTWARE.
 #include "base/CCRef.h"
 #include "base/CCVector.h"
 #include "2d/CCScene.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "platform/CCGLView.h"
 
 NS_AX_BEGIN

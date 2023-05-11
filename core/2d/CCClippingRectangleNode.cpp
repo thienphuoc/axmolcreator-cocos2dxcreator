@@ -24,7 +24,7 @@
 #include "2d/CCClippingRectangleNode.h"
 #include "base/CCDirector.h"
 #include "renderer/CCRenderer.h"
-#include "axmol/core/math/Vec2.h"
+#include "math/Vec2.h"
 #include "platform/CCGLView.h"
 
 NS_AX_BEGIN

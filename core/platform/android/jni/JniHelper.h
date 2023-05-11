@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include <functional>
 #include <type_traits>
 #include "platform/CCPlatformMacros.h"
-#include "axmol/core/math/Vec3.h"
+#include "math/Vec3.h"
 #include "jni/jni.hpp"
 
 namespace jni

@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated May 1, 2019. Replaces all prior versions.
+ * Last updated September 24, 2021. Replaces all prior versions.
  *
- * Copyright (c) 2013-2019, Esoteric Software LLC
+ * Copyright (c) 2013-2021, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -15,21 +15,17 @@
  * Spine Editor license and redistribution of the Products in any form must
  * include this license and copyright notice.
  *
- * THIS SOFTWARE IS PROVIDED BY ESOTERIC SOFTWARE LLC "AS IS" AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN
- * NO EVENT SHALL ESOTERIC SOFTWARE LLC BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES, BUSINESS
- * INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE SPINE RUNTIMES ARE PROVIDED BY ESOTERIC SOFTWARE LLC "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ESOTERIC SOFTWARE LLC BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
+ * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
-
-#ifdef SPINE_UE4
-#include "SpinePluginPrivatePCH.h"
-#endif
 
 #include <spine/BoneData.h>
 
@@ -37,19 +33,20 @@
 
 using namespace spine;
 
-BoneData::BoneData(int index, const String &name, BoneData *parent) :
-		_index(index),
-		_name(name),
-		_parent(parent),
-		_length(0),
-		_x(0),
-		_y(0),
-		_rotation(0),
-		_scaleX(1),
-		_scaleY(1),
-		_shearX(0),
-		_shearY(0),
-		_transformMode(TransformMode_Normal) {
+BoneData::BoneData(int index, const String &name, BoneData *parent) : _index(index),
+																	  _name(name),
+																	  _parent(parent),
+																	  _length(0),
+																	  _x(0),
+																	  _y(0),
+																	  _rotation(0),
+																	  _scaleX(1),
+																	  _scaleY(1),
+																	  _shearX(0),
+																	  _shearY(0),
+																	  _transformMode(TransformMode_Normal),
+																	  _skinRequired(false),
+																	  _color() {
 	assert(index >= 0);
 	assert(_name.length() > 0);
 }
@@ -136,4 +133,16 @@ TransformMode BoneData::getTransformMode() {
 
 void BoneData::setTransformMode(TransformMode inValue) {
 	_transformMode = inValue;
+}
+
+bool BoneData::isSkinRequired() {
+	return _skinRequired;
+}
+
+void BoneData::setSkinRequired(bool inValue) {
+	_skinRequired = inValue;
+}
+
+Color &BoneData::getColor() {
+	return _color;
 }

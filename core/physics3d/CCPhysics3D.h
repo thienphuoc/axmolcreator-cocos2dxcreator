@@ -27,7 +27,7 @@
 #define __PHYSICS_3D_H__
 
 #include "base/ccConfig.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 #if AX_USE_3D_PHYSICS
 

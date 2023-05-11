@@ -28,7 +28,7 @@ THE SOFTWARE.
 #define __AX_TOUCH_H__
 
 #include "base/CCRef.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 NS_AX_BEGIN
 

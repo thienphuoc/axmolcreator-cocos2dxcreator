@@ -29,7 +29,7 @@
 #include "3d/CCBundle3DData.h"
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include <vector>
 
 NS_AX_BEGIN

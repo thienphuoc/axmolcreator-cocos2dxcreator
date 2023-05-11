@@ -26,7 +26,7 @@
 #ifndef __PHYSICS_3D_OBJECT_H__
 #define __PHYSICS_3D_OBJECT_H__
 
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "base/CCRef.h"
 #include "base/ccConfig.h"
 

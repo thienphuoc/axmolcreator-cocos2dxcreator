@@ -36,8 +36,8 @@
 #include "base/CCVector.h"
 #include "base/CCProtocols.h"
 #include "base/CCScriptSupport.h"
-#include "axmol/core/math/CCAffineTransform.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCAffineTransform.h"
+#include "math/CCMath.h"
 #include "2d/CCComponentContainer.h"
 #include "2d/CCComponent.h"
 

@@ -312,7 +312,7 @@ THE SOFTWARE.
  * size.
  */
 #ifndef AX_USE_WEBP
-#    define AX_USE_WEBP 0
+#    define AX_USE_WEBP 1
 #endif  // AX_USE_WEBP
 
 /** Enable Lua Script binding */

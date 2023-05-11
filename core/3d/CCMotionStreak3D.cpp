@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include "3d/CCMotionStreak3D.h"
 #include <stddef.h>  // offsetof
 #include "base/ccTypes.h"
-#include "axmol/core/math/CCVertex.h"
+#include "math/CCVertex.h"
 #include "base/CCDirector.h"
 #include "base/ccUtils.h"
 #include "renderer/CCTextureCache.h"

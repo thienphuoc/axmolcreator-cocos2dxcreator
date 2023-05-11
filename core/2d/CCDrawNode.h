@@ -36,7 +36,7 @@
 #include "2d/CCNode.h"
 #include "base/ccTypes.h"
 #include "renderer/CCCustomCommand.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "base/any_buffer.h"
 
 NS_AX_BEGIN

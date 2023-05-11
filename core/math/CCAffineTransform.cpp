@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "axmol/core/math/CCAffineTransform.h"
+#include "math/CCAffineTransform.h"
 
 #include <algorithm>
 #include <math.h>

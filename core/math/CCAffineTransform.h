@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "platform/CCPlatformMacros.h"
 
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 /**
  * @addtogroup base

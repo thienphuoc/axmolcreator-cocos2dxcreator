@@ -27,7 +27,7 @@
 #define __AX_PLANE_H_
 
 #include "base/ccMacros.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 NS_AX_BEGIN
 

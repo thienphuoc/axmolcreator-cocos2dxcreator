@@ -26,11 +26,11 @@
 
 #include "platform/CCPlatformMacros.h"
 #include "platform/CCFileUtils.h"
-#include "axmol/core/math/Vec2.h"
-#include "axmol/core/math/Vec3.h"
-#include "axmol/core/math/Vec4.h"
-#include "axmol/core/math/Mat4.h"
-#include "axmol/core/math/Quaternion.h"
+#include "math/Vec2.h"
+#include "math/Vec3.h"
+#include "math/Vec4.h"
+#include "math/Mat4.h"
+#include "math/Quaternion.h"
 #include "base/ccUTF8.h"
 #include "base/CCData.h"
 

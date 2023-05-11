@@ -2,7 +2,7 @@
 #pragma once
 
 #include "base/ccMacros.h"
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 
 #include <unordered_map>
 #include <vector>

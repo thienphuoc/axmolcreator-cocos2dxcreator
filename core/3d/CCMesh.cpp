@@ -40,7 +40,7 @@
 #include "renderer/CCRenderer.h"
 #include "renderer/backend/Buffer.h"
 #include "renderer/backend/Program.h"
-#include "axmol/core/math/Mat4.h"
+#include "math/Mat4.h"
 
 using namespace std;
 

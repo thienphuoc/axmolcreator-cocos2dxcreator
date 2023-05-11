@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include "base/CCValue.h"
 #include "2d/CCSpriteFrame.h"
 #include "2d/CCSpriteFrameCache.h"
-#include "axmol/core/math/FastRNG.h"
+#include "math/FastRNG.h"
 
 NS_AX_BEGIN
 

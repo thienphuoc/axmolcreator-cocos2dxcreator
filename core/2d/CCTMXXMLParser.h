@@ -31,7 +31,7 @@ THE SOFTWARE.
 
 /// @cond DO_NOT_SHOW
 
-#include "axmol/core/math/CCMath.h"
+#include "math/CCMath.h"
 #include "platform/CCSAXParser.h"
 #include "base/CCVector.h"
 #include "base/CCMap.h"
